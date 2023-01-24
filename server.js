@@ -16,9 +16,9 @@ app.post('/api/addTransaction', async (req, res) => {
     try {
         transactions.txs.push(req.body);
         txId++;
-        res.status(201).send("transaction saved");
+        res.status(201).send(txId);
     } catch (err) {
-         res.status(400).send("erreur", err)
+         res.status(400).send({message : "erreur"})
     }  
 });
    

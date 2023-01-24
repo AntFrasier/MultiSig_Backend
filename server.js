@@ -14,6 +14,7 @@ app.use(express.json());
 
 app.post('/api/addTransaction', async (req, res) => {
     try {
+        console.log(req.body)
         transactions.txs.push(req.body);
         txId++;
         res.status(201).send(txId);

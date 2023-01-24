@@ -19,7 +19,7 @@ app.post('/api/addTransaction', async (req, res) => {
         txId++;
         res.status(201).send(txId);
     } catch (err) {
-         res.status(400).send({message : "erreur"})
+         res.status(400).send("erreur")
     }  
 });
    

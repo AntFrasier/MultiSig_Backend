@@ -79,7 +79,7 @@ app.get('/api/deleteTx/:id', async (req, res) => {
 
 app.get('/api/transactions', async (req, res) => {
         try {
-            res.status(200).send({ transactions })
+            res.status(200).send( transactions )
         } catch (err) {
             console.log("erreur in get all txs", err)
             res.status(404).send({ message: "no txs found" })

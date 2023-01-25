@@ -7,7 +7,7 @@ const app = express();
 // var https = require('https')
 
 const txId = 0;
-const transactions = { txs: [] };
+const content = { txs: [] };
 
 app.use(cors())
 app.use(express.json());
@@ -15,7 +15,7 @@ app.use(express.json());
 app.post('/api/addTransaction', async (req, res) => {
     try {
         console.log(req.body)
-        transactions.txs.push(req.body);
+        content.txs.push(req.body);
         txId++;
         res.status(201).send(txId);
     } catch (err) {
@@ -28,12 +28,12 @@ app.post('/api/updateSingleTransaction/:id', (req, res) => {
     const id = req.params.id;
     const sign = req.body.sign;
     try {
-        let newTransactions =  transactions.txs.map((tx) => {
+        let newContent =  content.txs.map((tx) => {
                 if (tx.txId == id && !tx.signatures.includes(sign)) tx.signatures.push(sign);
                 return tx;
             });
-        transactions = newTransactions;
-        res.status(200).send({ transactions })
+        content = newContent;
+        res.status(200).send({ content })
     } catch (err) {
         console.log("erreur in finding transaction id", err)
         res.status(404).send({ message: "not find" })
@@ -66,11 +66,11 @@ app.get('/api/singleTransaction/:id', async (req, res) => {
 app.get('/api/deleteTx/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        let newTransactions = await content.txs.filter(function (tx) {
+        let newContent = await content.txs.filter(function (tx) {
                 return tx.txId != id;
             });
-        transactions = newTransactions;
-        res.status(200).send(transactions);
+        content = newContent;
+        res.status(200).send(content);
     } catch (err) {
             console.log("erreur in finding transaction id", err)
             res.status(404).send({ message: "not find" })
@@ -79,7 +79,7 @@ app.get('/api/deleteTx/:id', async (req, res) => {
 
 app.get('/api/transactions', async (req, res) => {
         try {
-            res.status(200).send( transactions )
+            res.status(200).send( content )
         } catch (err) {
             console.log("erreur in get all txs", err)
             res.status(404).send({ message: "no txs found" })

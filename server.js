@@ -16,10 +16,10 @@ app.post('/api/addTransaction', async (req, res) => {
     try {
         console.log(req.body)
         content.txs.push(req.body);
-        txId++;
-        res.status(201).send(txId);
+        txId = txId++;
+        res.status(201).send({txId});
     } catch (err) {
-         res.status(400).send("erreur")
+         res.status(400).send(err)
     }  
 });
    

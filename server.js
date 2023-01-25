@@ -49,10 +49,10 @@ app.get('/api/txId', async (req, res) => {
     }
 });
 
-app.get('/api/singleTransaction/:id', async (req, res) => {
+app.get('/api/singleTransaction/:id', (req, res) => {
     try { 
         const id = req.params.id;
-        let transaction = await content.txs.filter(function (tx) {
+        let transaction = content.txs.filter(function (tx) {
                 return tx.txId == id;
             });
             res.status(200).send(transaction)
@@ -79,7 +79,7 @@ app.get('/api/deleteTx/:id', async (req, res) => {
 
 app.get('/api/transactions', async (req, res) => {
         try {
-            res.status(200).send( content )
+            res.status(200).send( {content} )
         } catch (err) {
             console.log("erreur in get all txs", err)
             res.status(404).send({ message: "no txs found" })

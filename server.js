@@ -1,13 +1,10 @@
 const express = require('express');
-const fs = require('fs');
-const { exists } = require('fs');
-const fsPromises = require('fs').promises;
 const cors = require('cors');
 const app = express();
 // var https = require('https')
 
-const txId = 0;
-const content = { txs: [] };
+var txId = 1000;
+var content = { txs: [] };
 
 app.use(cors())
 app.use(express.json());
@@ -16,7 +13,7 @@ app.post('/api/addTransaction', async (req, res) => {
     try {
         console.log(req.body)
         content.txs.push(req.body);
-        txId = txId++;
+        txId = txId + 1 ;
         res.status(201).send({txId});
     } catch (err) {
          res.status(400).send(err)
@@ -32,7 +29,7 @@ app.post('/api/updateSingleTransaction/:id', (req, res) => {
                 if (tx.txId == id && !tx.signatures.includes(sign)) tx.signatures.push(sign);
                 return tx;
             });
-        content = newContent;
+        content.txs = newContent;
         res.status(200).send({ content })
     } catch (err) {
         console.log("erreur in finding transaction id", err)
@@ -66,10 +63,11 @@ app.get('/api/singleTransaction/:id', (req, res) => {
 app.get('/api/deleteTx/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        let newContent = await content.txs.filter(function (tx) {
+        let newContent = content.txs.filter(function (tx) {
                 return tx.txId != id;
             });
-        content = newContent;
+            console.log("this is new content" , newContent)
+        content.txs = [...newContent];
         res.status(200).send(content);
     } catch (err) {
             console.log("erreur in finding transaction id", err)
